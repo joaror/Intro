@@ -24,8 +24,13 @@ section {
     width: fit-content;
 }
 
-.imageList {
-    border-radius: 50%;
+.imageContainer {
     width: 40px;
-    height: 40px;
+    transition: ease-in-out 500ms;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 50%;
 }
