@@ -1,0 +1,33 @@
+body {
+    display: flex;
+    height: 100vh;
+    }
+    
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    border-radius: 25px;
+    background-color: blue;
+}
+
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+    background-color: rgb(20, 219, 193);
+    padding: 25px;
+    border-radius: 25px;
+    box-shadow: 20px 10px 8px 4px black;
+    border-style: ridge;
+}
+
+p {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 50px;
+    color: aliceblue;
+    text-shadow: 6px 4px 5px black;
+}
