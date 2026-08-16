@@ -1,0 +1,39 @@
+.flex {
+    display: flex;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.spacing {
+    justify-content: space-between;
+}
+
+.centerself {
+    align-self: center;
+}
+
+.endself {
+    align-self: flex-end;
+}
+
+.margin {
+    margin: 5px;
+}
+
+.height {
+    height: 10px;
+}
+
+.order1 {
+    order: 1;
+}
+
+.order2 {
+    order: 2;
+}
+
+.order3 {
+    order: 3;
+}

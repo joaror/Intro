@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>- Oppgave 121A -</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="flex margin">
+        <div class="flex column spacing margin order2">
+            <div id="circledim">
+                <p>Sirkel input:</p>
+                <input type="number" id="circleX">:x<br>
+                <input type="number" id="circleY">:y<br>
+                <input type="number" id="circleR">:r<br>
+            </div>
+            <div class="flex margin">
+                <p>Sirkel farge:</p>
+                <select class="centerself" id="circlecolor">
+                    <option value="red">Red</option>
+                    <option value="green">Green</option>
+                    <option value="blue">Blue</option>
+                    <option value="yellow">Yellow</option>
+                    <option value="black">Black</option>
+                    <option value="brown">Brown</option>
+                </select>
+            </div>
+            <button onclick="addCircleFromInput()">Legg til sirkel</button>
+        </div>
+        <div class="flex column spacing margin order1">
+            <div>
+                <p>Rektangel input:</p>
+                <input type="number" id="rectx">:x<br>
+                <input type="number" id="recty">:y<br>
+                <input type="number" id="rectwidth">:w<br>
+                <input type="number" id="rectheight">:h<br>
+            </div>
+            <div class="flex margin">
+                <p>Rektangel farge:</p>
+                <select class="centerself" id="rectcolor">
+                    <option value="red">Red</option>
+                    <option value="green">Green</option>
+                    <option value="blue">Blue</option>
+                    <option value="yellow">Yellow</option>
+                    <option value="black">Black</option>
+                    <option value="brown">Brown</option>
+                </select>
+            </div>
+            <button onclick="addRectFromInput()">Legg til firkant</button>
+        </div>
+        <button class="order3 endself margin " onclick="isVector.innerHTML = ``">Reset SVG</button>
+    </div>
+
+    <svg id="mySvg" width="800" height="600" style="background-color: lightgray;">
+    </svg>
+
+    <script src="main.js"></script>
+    
+</body>
+
+</html>
