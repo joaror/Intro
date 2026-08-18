@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body onload="showBoard()">
+    <div class="flexcontainer alignitemscenter">
+        <div id="board"></div>
+        <div class="flexcontainer">
+            <div class="alignbuttons">
+                <button id="up" onclick="isMoving(-8)" >▲</button>
+            </div>
+            <div class="alignbuttons">
+                <button id="left" onclick="isMoving(-1)">◄</button>
+                <button id="down" onclick="isMoving(8)">▼</button>
+                <button id="right" onclick="isMoving(1)">►</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="main.js"></script>
+    
+</body>
+
+</html>
