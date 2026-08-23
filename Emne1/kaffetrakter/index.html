@@ -9,11 +9,17 @@
 </head>
 
 
-<body onload="draw()">
+<body onload="setBrewer()">
     <div class="flexcontainer">
         <div class="header"></div>
         <div class="maincontainer">
-            <div class="sidebar"></div>
+            <div class="sidebar">
+                <button onclick="powerSwitch()" id="powerbutton">On/Off</button>
+                <button onclick="startBrew()" id="startbutton" disabled>Start brewing</button>
+                <button onclick ="drainCoffee()" id="drainbutton" disabled>Drain Coffee</button>
+                <button onclick="abortBrew()" id="abortbutton" disabled>Abort</button>
+                <button onclick="checkStates()">sjekk</button>
+            </div>
             <div class="maincontent">
                 <div class="canvascontainer">
                     <canvas id="kaffecanvas" width="500" height="500" ></canvas>
