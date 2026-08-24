@@ -1,7 +1,8 @@
-const kaffe = document.getElementById("kaffecanvas");
-const ctxKaffe = kaffe.getContext("2d");
+const kaffe = document.getElementById('kaffecanvas');
+const ctxKaffe = kaffe.getContext('2d');
 
-const startBtn = document.getElementById("startbutton");
+const powerBtn = document.getElementById('powerbutton');
+const startBtn = document.getElementById('startbutton');
 const abortBtn = document.getElementById('abortbutton');
 const drainBtn = document.getElementById('drainbutton');
 
@@ -11,7 +12,7 @@ let waterVolume = isEmpty;
 let fillLiquid = initFillLiquid;
 let drainLiquid = initDrainLiquid;
 
-let isFrameRate = 10;
+let animationRate = 10;
 
 const brewStates = {
     isOn:false, isAborting:false, inProcess:false, 
@@ -25,27 +26,39 @@ const abortStates = {
 
 function checkStates() {
     console.log(brewStates);
-    console.log(drainLiquid, fillLiquid);
     console.log(abortStates);
+    console.log(drainLiquid, fillLiquid);
 };
-
-function powerSwitch() {
-    brewStates.isOn ? 
-        (Object.assign(brewStates, {isOn:false, isCoffee:false}), clearInterval(brewTimer)) :
-        brewStates.isOn = true;
-    
-    
-}
 
 function setBrewer() {
     kaffetrakter();
     brewLoop();
-};
-
-function startBrew() {
-    Object.assign(brewStates, {isFilling:true, inProcess:true})
-    brewEngine(0.1, brewStates.isFilling);
 }
+
+addEventListener('click', (event) => {
+    let btnId = event.target.id;
+    if (btnId == 'powerbutton') {
+        powerSwitch();
+    } else if (btnId == 'startbutton') {
+        Object.assign(brewStates, {isFilling:true, inProcess:true});
+        brewHelper(null, 0.5, brewStates.isFilling);
+    } else if (btnId == 'drainbutton') {
+        Object.assign(brewStates, {isDraining:true, isCoffee:false});
+        brewHelper(coffeeVolume, 0.1, brewStates.isFilling, brewStates.isBrewing, brewStates.isDraining);
+    } else if (btnId == 'abortbutton') {
+        abortBrew();
+    } else if (btnId == 'logbutton') {
+        checkStates();
+    }
+});
+
+function powerSwitch() {
+    brewStates.isOn ? 
+        (Object.assign(brewStates, {isOn:false, isCoffee:false}), 
+            Object.assign(abortStates, {coffeeLevel:coffeeVolume, waterLevel:waterVolume}), 
+            clearInterval(brewTimer)) :
+        brewStates.isOn = true;
+};
 
 function btnLogic() {
     if (brewStates.isOn) {
@@ -68,6 +81,29 @@ function btnLogic() {
     }
 }
 
+function abortBrew() {
+    clearInterval(brewTimer);
+    Object.assign(brewStates, {isFilling:false, isBrewing:false, isAborting:true, isCoffee:false});
+    Object.assign(abortStates, {coffeeLevel:coffeeVolume, waterLevel:waterVolume});
+    fillLiquid = abortStates.coffeeLevel;
+    drainLiquid = abortStates.waterLevel;
+    brewEngine(0.2, brewStates.isFilling, brewStates.isBrewing, brewStates.isDraining, brewStates.isAborting);
+}
+
+function resetBrewer() {
+    Object.assign(brewStates, {isAborting:false, inProcess:false, isCoffee:false, isDraining:false});
+    fillLiquid = initFillLiquid;
+    drainLiquid = initDrainLiquid;
+    coffeeVolume = isEmpty;
+    waterVolume = isEmpty;
+}
+
+function brewHelper(liquid, rate, filling, brewing, draining) {
+    fillLiquid = initFillLiquid;
+    drainLiquid = liquid;
+    brewEngine(rate, filling, brewing, draining);
+}
+
 function brewEngine(rate, filling, brewing, draining, aborting) {
     brewTimer = setInterval(() => {
         if (filling) {
@@ -84,53 +120,26 @@ function brewEngine(rate, filling, brewing, draining, aborting) {
     }, 10);
 }
 
-function abortBrew() {
-    clearInterval(brewTimer);
-    Object.assign(brewStates, {isFilling:false, isBrewing:false, isAborting:true, isCoffee:false});
-    Object.assign(abortStates, {coffeeLevel:coffeeVolume, waterLevel:waterVolume});
-    fillLiquid = abortStates.coffeeLevel;
-    drainLiquid = abortStates.waterLevel;
-    brewEngine(0.2, brewStates.isFilling, brewStates.isBrewing, brewStates.isDraining, brewStates.isAborting);
-}
-
-function resetBrewer() {
-    clearInterval(brewTimer);
-    Object.assign(brewStates, {isAborting:false, inProcess:false, isCoffee:false})
-    fillLiquid = initFillLiquid;
-    drainLiquid = initDrainLiquid;
-    coffeeVolume = isEmpty;
-    waterVolume = isEmpty;
-}
-
-function drainCoffee() {
-    Object.assign(brewStates, {isDraining:true, isCoffee:false})
-    fillLiquid = initFillLiquid;
-    drainLiquid = coffeeVolume;
-    brewEngine(0.1, brewStates.isFilling, brewStates.isBrewing, brewStates.isDraining)
-}
-
 function brewDynamics() {
     if (brewStates.isFilling) {
         waterVolume = fillLiquid;
         if (waterVolume <= maxVolume) {
-            Object.assign(brewStates, {isFilling:false, isBrewing:true})
             clearInterval(brewTimer);
-            fillLiquid = initFillLiquid;
-            drainLiquid = waterVolume;
-            brewEngine(0.05, brewStates.isFilling, brewStates.isBrewing)
+            Object.assign(brewStates, {isFilling:false, isBrewing:true});
+            brewHelper(waterVolume, 0.05, brewStates.isFilling, brewStates.isBrewing);
         }
     } else if (brewStates.isBrewing) {
         coffeeVolume = fillLiquid;
         waterVolume = drainLiquid;
         if (coffeeVolume <= maxVolume) {
             clearInterval(brewTimer);
-            Object.assign(brewStates, {isBrewing:false, isCoffee:true})
+            Object.assign(brewStates, {isBrewing:false, isCoffee:true});
         }
     } else if (brewStates.isDraining) {
         coffeeVolume = drainLiquid;
         if (coffeeVolume >= isEmpty) {
+            clearInterval(brewTimer);
             resetBrewer();
-            brewStates.isDraining = false;
         }
     } else if (brewStates.isAborting) {
         if (coffeeVolume < isEmpty || waterVolume < isEmpty) {
@@ -141,6 +150,7 @@ function brewDynamics() {
                 waterVolume = drainLiquid;
             }
         } else {
+            clearInterval(brewTimer);
             resetBrewer();
         }
     }
@@ -194,8 +204,8 @@ function kaffetrakter() {
 }
  
 function brewLoop(time) {
-    lastFrameStamp === undefined ? deltaTime = isFrameRate : deltaTime = time - lastFrameStamp;
-    if (deltaTime >= isFrameRate) {
+    lastFrameStamp === undefined ? deltaTime = animationRate : deltaTime = time - lastFrameStamp;
+    if (deltaTime >= animationRate) {
         brewDynamics();
         btnLogic();
         draw();

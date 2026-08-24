@@ -67,6 +67,7 @@ html, body {
     align-self: center;
     border-width: 2px;
     margin: 10px;
+    
     border: solid black;
     background-color: rgb(205, 223, 223);
 }
