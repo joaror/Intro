@@ -17,7 +17,7 @@ function updateView() {
         app.innerHTML = /*HTML*/ `
             ${header()}
             <main>${page}</main>
-    `;
+        `;
     getSquare(targetSquare);
 }
 
