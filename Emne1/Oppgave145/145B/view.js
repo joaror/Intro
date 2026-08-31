@@ -1,7 +1,7 @@
 // View
 updateView();
 function updateView() {
-    let page = 'grid'
+    let page = 'grid';
 
     if (currentPage == 'frontpage') page = frontPage();
     app.innerHTML = /* HTML */ `

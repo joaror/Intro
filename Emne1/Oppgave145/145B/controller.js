@@ -3,17 +3,17 @@
 function cycleBodyParts (increase, decrease, value, iD) {
     if (increase) {
         if (value < 4) {
-            value ++
+            value ++;
         } else {
-            value = 1
-        }
+            value = 1;
+        };
     } else if (decrease) {
         if (value > 1) {
-            value --
+            value --;
         } else {
-            value = 4
-        }
-    } 
+            value = 4;
+        };
+    };
 
     if (iD == 'head') {
         isHead = value;
