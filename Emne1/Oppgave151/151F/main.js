@@ -2,8 +2,9 @@
 const app = document.getElementById('app');
 let currentPage = 'frontpage';
 
-let text = textObj = jsonTextObj = testText = '';
-let textArray = []
+const textArray = []
+
+let text = '';
 
 //View
 updateView();
@@ -49,7 +50,7 @@ function sidebar() {
                 value="${text}" 
                 oninput="text = this.value" 
                 placeholder="input">
-            <button onclick="prettierChars(text)">Process input</button>
+            <button onclick="prettyArray(text)">Process input</button>
         </div>
     `;
 }
@@ -68,6 +69,21 @@ function footer() {
 }
 
 //Controller
+function prettyArray(text) {
+    for (let [key, value] of Object.entries(charSorted(text))) {
+        textArray.push(key+':'+value);
+    }   
+    console.log(textArray);
+    updateView();
+    textArray.length = 0;
+}
+
+function charSorted(text) {
+    const sortedChars = Object.fromEntries(
+        Object.entries(charCount(text)).sort(([,a],[,b]) => b-a)
+    );
+    return sortedChars;
+}
 
 function charCount(text) {
     let count = (str) => {
@@ -78,12 +94,4 @@ function charCount(text) {
         return countedChars;
         };
     return count(text);
-}
-
-function prettierChars(text) {
-    for (let [key, value] of Object.entries(charCount(text))) {
-        textArray.push(key+':'+value);
-    }
-    updateView();
-    textArray = [];
 }
