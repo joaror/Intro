@@ -86,12 +86,9 @@ function charSorted(text) {
 }
 
 function charCount(text) {
-    let count = (str) => {
-        const countedChars = {};
-        [...str].sort().forEach((char) => {
-            countedChars[char] = (countedChars[char] || 0) + 1;
-            });
-        return countedChars;
+    const countedChars = {}; 
+    for (let char of [...text].sort()){
+        countedChars[char] = (countedChars[char] || 0) + 1;
         };
-    return count(text);
-}
+    return countedChars;
+};
