@@ -2,10 +2,6 @@
 const app = document.getElementById('app');
 let currentPage = 'frontpage';
 
-const textArray = []
-
-let text = '';
-
 //View
 updateView();
 function updateView() {
@@ -45,20 +41,13 @@ function header() {
 
 function sidebar() {
     return /* HTML */ `
-        <div id="inputs">
-            <input type="text" 
-                value="${text}" 
-                oninput="text = this.value" 
-                placeholder="input">
-            <button onclick="prettyArray(text)">Process input</button>
-        </div>
+        <h1>Sidebar</h1>
     `;
 }
 
 function maincontent() {
     return /* HTML */ `
-        <p>${text}<br>
-        ${textArray}</p>
+        <pre id="output"></pre>
     `;
 }
 
@@ -69,26 +58,31 @@ function footer() {
 }
 
 //Controller
-function prettyArray(text) {
-    for (let [key, value] of Object.entries(charSorted(text))) {
-        textArray.push(key+':'+value);
-    }   
-    console.log(textArray);
-    updateView();
-    textArray.length = 0;
+function writeLine(a, b, c) {
+    for(let i = 0; i < a; i++) {
+        writeSpace();
+    }
+    for(let i = 0; i < b; i++) {
+        writeHash();
+    }
+    for(let i = 0; i < c; i++) {
+        writeLineBreak();
+    }
 }
 
-function charSorted(text) {
-    const sortedChars = Object.fromEntries(
-        Object.entries(charCount(text)).sort(([,a],[,b]) => b-a)
-    );
-    return sortedChars;
-};
+writeLine(0,8,1);
+writeLine(1,6,1);
+writeLine(2,4,1);
+writeLine(3,2,1);
 
-function charCount(text) {
-    const countedChars = {}; 
-    for (let char of [...text].sort()){
-        countedChars[char] = (countedChars[char] || 0) + 1;
-        };
-    return countedChars;
-};
+    function writeHash() {
+        document.getElementById('output').innerText += '#';
+    }
+
+    function writeSpace() {
+        document.getElementById('output').innerText += ' ';
+    }
+
+    function writeLineBreak() {
+        document.getElementById('output').innerText += '\n';
+    }

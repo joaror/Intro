@@ -69,11 +69,15 @@ function footer() {
 }
 
 //Controller
+
+const newTask = [];
 function prettyArray(text) {
     for (let [key, value] of Object.entries(charSorted(text))) {
         textArray.push(key+':'+value);
     }   
-    console.log(textArray);
+    newTask.push(text.split(' '))
+    console.log(newTask)
+    //console.log(textArray);
     updateView();
     textArray.length = 0;
 }
