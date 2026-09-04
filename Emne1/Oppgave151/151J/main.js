@@ -2,9 +2,20 @@
 const app = document.getElementById('app');
 let currentPage = 'frontpage';
 
-const textArray = []
+const textArray = [];
+const vocalArray = ['a', 'e', 'i', 'o', 'u', 'æ', 'ø', 'å'];
 
-let text = '';
+const isWordsVocals = {
+    words:{},
+    vocals:{}
+}
+
+const printedArrays = {
+    words:[],
+    vocals:[]
+};
+
+let text = isTextArrayLength = '';
 
 //View
 updateView();
@@ -50,15 +61,24 @@ function sidebar() {
                 value="${text}" 
                 oninput="text = this.value" 
                 placeholder="input">
-            <button onclick="prettyArray(text)">Process input</button>
+            <button onclick="initProcess()">Process input</button>
         </div>
     `;
 }
 
 function maincontent() {
     return /* HTML */ `
-        <p>${text}<br>
-        ${textArray}</p>
+        <div id="content">
+            <p>
+                ${isTextArrayLength +' ord: '+ text}
+            </p>
+            <p>
+                ${printedArrays.words}
+            </p>
+            <p>
+                ${printedArrays.vocals}
+            </p>
+        </div>
     `;
 }
 
@@ -70,29 +90,59 @@ function footer() {
 
 //Controller
 
-const newTask = [];
-function prettyArray(text) {
-    for (let [key, value] of Object.entries(charSorted(text))) {
-        textArray.push(key+':'+value);
-    }   
-    newTask.push(text.split(' '))
-    console.log(newTask)
-    //console.log(textArray);
+function initProcess() {
+    textArray.push(text.split(' '))
+    isTextArrayLength = textArray[0].length;
+    console.log(isTextArrayLength)
+    multiCount();
+    multiSort();
+    prettyArray();
     updateView();
-    textArray.length = 0;
+    resetAll();
 }
 
-function charSorted(text) {
-    const sortedChars = Object.fromEntries(
-        Object.entries(charCount(text)).sort(([,a],[,b]) => b-a)
-    );
-    return sortedChars;
+function resetAll() {
+    textArray.length = 0;
+    Object.assign(isWordsVocals, {
+        words:{}, 
+        vocals:{}
+    });
+    Object.assign(printedArrays, {
+        words:[], 
+        vocals:[]
+    });
+}
+
+function prettyArray() {
+    for (let [key, value] of Object.entries(isWordsVocals.words)) {
+        printedArrays.words.push(value+' '+key);
+    };
+    for (let [key, value] of Object.entries(isWordsVocals.vocals)) {
+        printedArrays.vocals.push(value+' '+key);
+    };
 };
 
-function charCount(text) {
-    const countedChars = {}; 
-    for (let char of [...text].sort()){
-        countedChars[char] = (countedChars[char] || 0) + 1;
+function multiSort() {
+    isWordsVocals.words = Object.fromEntries(
+        Object.entries(isWordsVocals.words).sort(([,a],[,b]) => b-a)
+    );
+    isWordsVocals.vocals = Object.fromEntries(
+        Object.entries(isWordsVocals.vocals).sort(([,a],[,b]) => b-a)
+    );
+};
+
+function multiCount() {
+    let count, vocalCount;
+    for(let word of textArray[0]) {
+        count = 0;
+        vocalCount = 0;
+        for(let i = 0; i < word.length; i++) {
+            count++;
+            isWordsVocals.words[' bokstav(er) i ' + "'" + word + "'"] = count;
+            if(vocalArray.includes(word[i])) {
+                vocalCount++;
+                isWordsVocals.vocals[' vokal(er) i ' + "'" + word + "'"] = vocalCount;
+            };
         };
-    return countedChars;
+    };
 };

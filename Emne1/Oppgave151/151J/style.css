@@ -30,6 +30,7 @@ html, body {
     height: 60%;
     min-width: fit-content;
     min-height: fit-content;
+    overflow: hidden;
 }
 
 #sidebar {
@@ -49,13 +50,24 @@ html, body {
     background-color:blanchedalmond; 
 }
 
+#content {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 100%;
+    background-color: blueviolet
+}
+
 #inputs {
     margin: 5px;
     line-height: 2;
 }
 
 div > p {
-    margin: 2rem;
+    margin: 3rem;
     font-family: 'Courier New', Courier, monospace;
-    font-size: 2rem;
+    font-size: 1rem;
+    font-weight: 900;
+    color: rgb(233, 160, 240);
+    
 }
