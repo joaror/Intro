@@ -2,8 +2,11 @@
 const app = document.getElementById('app');
 let currentPage = 'frontpage';
 
-const textArray = [];
-const vocalArray = ['a', 'e', 'i', 'o', 'u', 'æ', 'ø', 'å'];
+const textArray = Array()
+const vocalArray = [
+    ['a', 'e', 'i', 'o', 'u', 'y', 'æ', 'ø', 'å'],
+    ['A', 'E', 'I', 'O', 'U', 'Y', 'Æ', 'Ø', 'Å']
+];
 
 const isWordsVocals = {
     words:{},
@@ -89,11 +92,10 @@ function footer() {
 }
 
 //Controller
-
 function initProcess() {
     textArray.push(text.split(' '))
     isTextArrayLength = textArray[0].length;
-    console.log(isTextArrayLength)
+    console.log(textArray.flat())
     multiCount();
     multiSort();
     prettyArray();
@@ -115,10 +117,10 @@ function resetAll() {
 
 function prettyArray() {
     for (let [key, value] of Object.entries(isWordsVocals.words)) {
-        printedArrays.words.push(value+' '+key);
+        printedArrays.words.push(' '+value+' '+key);
     };
     for (let [key, value] of Object.entries(isWordsVocals.vocals)) {
-        printedArrays.vocals.push(value+' '+key);
+        printedArrays.vocals.push(' '+value+' '+key);
     };
 };
 
@@ -139,7 +141,7 @@ function multiCount() {
         for(let i = 0; i < word.length; i++) {
             count++;
             isWordsVocals.words[' bokstav(er) i ' + "'" + word + "'"] = count;
-            if(vocalArray.includes(word[i])) {
+            if(vocalArray.flat().includes(word[i])) {
                 vocalCount++;
                 isWordsVocals.vocals[' vokal(er) i ' + "'" + word + "'"] = vocalCount;
             };
