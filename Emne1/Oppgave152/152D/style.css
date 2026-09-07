@@ -29,8 +29,9 @@ html, body {
     width: 100%;
     height: 80%;
     min-width: fit-content;
-    max-height: 100%;
-}
+    min-height: fit-content;
+/*     max-height: 100%;
+ */}
 
 #sidebar {
     display: flex;
@@ -63,6 +64,6 @@ html, body {
 }
 
 #tablecontainer {
-    column-count: 3;
+    column-count: 4;
     margin: 1rem;
 }

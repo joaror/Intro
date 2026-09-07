@@ -72,7 +72,7 @@ function footer() {
     `;
 }
 
-function textInput(params) {
+function textInput() {
     return /* HTML */ `
         <div id='elementscontainer'>
             <label for='texinput'>Lim inn teksten her:
@@ -123,6 +123,8 @@ function textCleaner() {
     }
     doAsInstructed()
     updateView()
+    text = ''
+    textArray.length = 0
 }
 
 function doAsInstructed() {
