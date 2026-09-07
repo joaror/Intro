@@ -5,6 +5,11 @@ let currentPage = 'frontpage';
 const number7 = Array();
 const gameGridArray = ['1', '2', '3', '4', '5', '6', '7', '8', ' '];
 
+const movesArray = [
+    [-3, 3, -1, 1],
+    ['23', '32', '56', '65']
+]
+
 
 //View
 updateView();
@@ -91,16 +96,9 @@ function someFunction(clicked) {
 }
 
 function calculateMoves(blank, clicked) {
-    let move;
-    blank -3 == clicked ? move = true :
-    blank +3 == clicked ? move = true :
-    blank -1 == clicked ? move = true :
-    blank +1 == clicked ? move = true : move = false;
-    if((blank == 6 && clicked == 5) || 
-        (blank == 5 && clicked == 6) ||
-        (blank == 2 && clicked == 3) || 
-        (blank == 3 && clicked == 2)) move = false;
-    return move
+    if (movesArray[0].includes(blank-clicked) && 
+        !movesArray[1].includes(String(blank)+String(clicked))) 
+    return true
 }
 
 function makeNumbers() {
