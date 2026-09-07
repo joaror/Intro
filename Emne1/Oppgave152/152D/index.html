@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>- Oppgave 152D -</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="app"></div>
+
+
+    <script src="main.js"></script>
+</body>
+
+</html>
+
+<!-- 
+Oppgave 152 D  
+Lag en nettside hvor brukeren kan lime inn en lengre tekst (for eksempel ved å kopiere fra en nettavis)
+inn i en <textarea> og trykke på en knapp for å få telt opp hvor mange det er av hvert ord. 
+    
+    Fremgangsmåten er som følger:
+
+Rens teksten for alt annet enn tegnene A-Z, Æ, Ø og Å i store og små bokstaver, samt mellomrom. 
+Bruk en løkke til å gå gjennom alle bokstavene - og kopier bare bokstaver over i en ny tekst.
+
+Bruk text.split(' ') til å dele opp en tekst i en liste av ord.
+
+Til opptellingen trenger du to lister: words og wordCounts. Gå gjennom alle ordene. 
+Sjekk først om ordet finnes i words med indexOf. 
+Hvis det gjør det, er opptellingen i samme indeks i wordCounts - øk den med én. 
+Hvis ordet ikke finnes i words, legger du det til med push() - og du legger til 1 i wordCounts, altså wordsCounts.push(1).
+
+Eksempel:
+
+indeks	words	wordCounts
+0	'en'	5
+1	'hei'	1
+2	'eller'	2
+Etter opptellingen, går du gjennom begge listene samtidig i en løkke og viser hvor mange det forekomster det var av hvert ord.
+
+
+-->
