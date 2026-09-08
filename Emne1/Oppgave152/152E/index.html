@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>- Oppgave 152E -</title>
+</head>
+
+<body>
+
+    <div>
+        <button onclick="arrayFiller(range)">FILL ARRAY</button>
+        <button onclick="numbersArray.length = 0">RESET ARRAY</button>
+        <input type="number" oninput="range = this.value" placeholder="input range">
+    </div>
+    <div id="count"></div>
+
+    <script>
+        const count = document.getElementById('count');
+        const numbersArray = Array();
+        let range = 1;
+        
+        function arrayFiller(amount) {
+            let tries = 0;
+            let digits = 0
+            while (true) {
+                tries++;
+                if (numbersArray.length < amount) {
+                    while (true) {
+                        let digit = Math.floor(Math.random() * amount) + 1;
+                        digits++
+                        if(!numbersArray.includes(digit)) {
+                            numbersArray.push(digit);
+                            if (numbersArray.length >= amount) break;
+                        }
+                    }
+                } 
+                if (checkArray() == true) {
+                    numbersArray.length = 0;
+                    count.innerHTML = /* HTML */ `
+                        <h1>Genererte arrays : ${tries.toLocaleString('no-NO')}</h1>
+                        <h1>Genererte siffer : ${digits.toLocaleString('no-NO')}</h1>
+                    `;
+                    break;
+                } 
+                numbersArray.length = 0;
+            }
+        }
+        
+        function checkArray() {
+            const stringArray = JSON.stringify(numbersArray);
+            const ascendArray = JSON.stringify(numbersArray.sort((a, b) => a-b));
+            const descendArray = JSON.stringify(numbersArray.sort((a, b) => b-a));
+            if (stringArray != ascendArray) {
+                if(stringArray != descendArray) {
+                    return false;
+                } else {
+                    console.log('SORTED descending', numbersArray);
+                    return true;
+                }
+            } else {
+                console.log('SORTED ascending', numbersArray);
+                return true;
+            }
+        }
+        
+        
+    </script>
+</body>
+
+</html>
+
+<!-- 
+Skriv en funksjon som tar en liste av tall som parameter og som returnerer
+true eller false basert på om listen er sortert eller ikke. 
+Du skal bare gå gjennom listen en gang med kun én løkke. 
+-->
