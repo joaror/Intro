@@ -5,6 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>- Oppgave 152E -</title>
+    <style>
+        #columnarray {
+            column-count: 12;
+            margin: 1rem;
+        }
+    </style>
 </head>
 
 <body>
@@ -19,6 +25,7 @@
     <script>
         const count = document.getElementById('count');
         const numbersArray = Array();
+        const theGreatArray = []
         let range = 1;
         
         function arrayFiller(amount) {
@@ -36,19 +43,32 @@
                         }
                     }
                 } 
+                theGreatArray.push(numbersArray.flat())
+
                 if (checkArray() == true) {
                     numbersArray.length = 0;
                     count.innerHTML = /* HTML */ `
                         <h1>Genererte arrays : ${tries.toLocaleString('no-NO')}</h1>
                         <h1>Genererte siffer : ${digits.toLocaleString('no-NO')}</h1>
+                        <div id='columnarray'>${greatArray()}</div>
                     `;
                     break;
                 } 
                 numbersArray.length = 0;
             }
         }
+
+        function greatArray() {
+            let n = `<div></div>`;
+            for(let i of theGreatArray) {
+                n += `<div>${i}</div>`
+            }
+            return n
+        }
+        
         
         function checkArray() {
+            console.log(numbersArray.flat())
             const stringArray = JSON.stringify(numbersArray);
             const ascendArray = JSON.stringify(numbersArray.sort((a, b) => a-b));
             const descendArray = JSON.stringify(numbersArray.sort((a, b) => b-a));
