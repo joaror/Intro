@@ -78,6 +78,9 @@ function gameGrid() {
     }
     return isSquares;
 }
+
+
+
 //Controller
 
 addEventListener('click', (event) => {
