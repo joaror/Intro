@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUnit</title>
+    <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.26.0.css">
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script src="https://code.jquery.com/qunit/qunit-2.26.0.js"></script>
+    <script src="controller.js"></script>
+    <script>
+
+
+        let numbersArray = ['1'];
+        let theGreatArray= ['2'];
+        let tries = 1;
+        let digits = 0;
+        let pageIndex = 0;
+        let breakLoop;
+
+        
+        function updateView() {
+            //Dummy
+        };
+
+        QUnit.test('navn', function(assert) {
+            const actual = reset()
+            const expected = 0
+            assert.equal(actual, expected)
+        })
+
+    </script>
+</body>
+</html>

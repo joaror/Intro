@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+
+
+
+    <script>
+        let colorObj = {
+                color1:{red:30, green:230, blue:80},
+                color2:{red:100, green:200, blue:50},
+                color3:{red:180, green:60, blue:120}
+        };
+        
+        drawSquareByObj(colorObj.color1, 
+            inverseColor(colorObj.color1), 
+            isAvgColor(colorObj.color1, colorObj.color2))
+        
+        function drawSquareByObj(color1, color2, color3) {
+            let color;
+            for(let i = 0; i <=2; i++) {
+                if(i<1){ 
+                    color = color1
+                    console.log(color)
+                } else if(i<2) {
+                    color = color2
+                    console.log(color)
+                } else {
+                    color = color3
+                    console.log(color)
+                }
+            document.getElementById('app').innerHTML += `
+                    <div 
+                        style= '
+                        margin: 1rem;
+                        width:50px;
+                        height:50px; 
+                        background-color:
+                        rgb(${color.red} 
+                            ${color.blue} 
+                            ${color.green})'>
+                    </div>
+                `;
+            }
+        }
+
+        function inverseColor(colToInverese) {
+            let inversedColor={}
+            for(let col in colToInverese ) {
+                inversedColor[col] = 255-colToInverese[col]
+            }
+            return inversedColor
+        }
+
+        function isAvgColor(colToAvg1,colToAvg2) {
+            let avgColor={}
+            for(let col in colToAvg1) {
+                avgColor[col] = (colToAvg1[col]+colToAvg2[col])/2
+            }
+            return avgColor
+        }
+
+        function isFiveColors(color1) {
+            let hasFiveColors = {
+                color1:color1,
+                
+                color2:isAvgColor(color1, 
+                    isAvgColor(color1, 
+                    inverseColor(color1))),
+                
+                color3:isAvgColor(color1, 
+                    inverseColor(color1)),
+                
+                color4:isAvgColor(isAvgColor(color1, 
+                    inverseColor(color1)), 
+                    inverseColor(color1)),
+                
+                color5:inverseColor(color1)
+            } 
+            return hasFiveColors
+        }
+        
+        
+
+    </script>
+
+</body>
+</html>

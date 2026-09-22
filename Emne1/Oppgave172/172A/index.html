@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>- ToDO -</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            height: 100%;
+            background-color: rgb(214, 147, 147);
+        }
+
+        #flexcontainer {
+            display: flex;
+            flex-direction: column;
+            width: 100vw;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+
+            div {
+                display: flex;
+                justify-content: center;
+                width: fit-content;
+                background-color: rgb(111, 182, 182);
+                border: 1px dotted black;
+                border-radius: 25px;
+            }
+
+            table {
+                margin: 4rem 5rem 5rem;
+                border-collapse: collapse;
+                border: 1px solid black;
+                font-family: 'Courier New',
+                    Courier, monospace;
+            }
+
+            caption {
+                caption-side: top;
+                padding-bottom: 10px;
+                text-align: left;
+
+                #date {
+                    border: none;
+                }
+            }
+
+            thead,
+            tfoot {
+                background-color: rgb(161, 125, 78);
+                font-size: 1.2rem;
+
+                letter-spacing: 6px;
+
+                th,
+                td {
+                    border: 1px black;
+                    padding: 8px 10px;
+
+                    text-align: center;
+                }
+            }
+
+            td:last-of-type {
+                text-align: right;
+            }
+
+            tbody>tr:nth-of-type(even) {
+                background-color: rgb(206, 184, 155);
+            }
+
+            .tableitem {
+                font-size: 1.1rem;
+            }
+
+            tfoot th,
+            td:last-of-type {
+                text-align: right;
+            }
+
+            .align-text-center {
+                text-align: center;
+            }
+
+            .padding-right {
+                padding-right: 1rem;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+
+
+    <script>
+        //Model
+        
+        let model = {
+            app: document.getElementById('app'),
+            time: {
+                date: new Date().toISOString().substring(0,10),
+                time: new Date().toISOString().substring(11,19)
+            },
+            table: {
+                masterTable: [],
+                sortedTableItems: [],
+                sorted: false
+            }
+        }
+
+        //View
+        updateView()
+        function updateView() {
+            model.app.innerHTML = `
+                <div id='flexcontainer'>
+                    <div>
+                        ${isToDoTable()}
+                    </div>
+                </div>
+            `;
+        }
+
+        function isToDoTable() {
+            let html = `
+                <table>
+                    <caption>
+                        <div id='date'>
+                            ${model.time.time}<br>
+                            ${model.time.date}
+                        </div>
+
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th onclick='model.table.sorted = !model.table.sorted; isSorting()'>Dato</th>
+                            <th>Oppgave</th>
+                            <th>Utført</th>
+                            <th>Handling</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${isTableItems()}
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input 
+                                    name='taskInput'
+                                    type='text' 
+                                    placeholder='task to add' 
+                                    onchange='addTableItems(this.value)'/>
+                            </td>
+                            <td colspan='2'></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan='4'></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            `;
+            return html
+        }
+
+        function isTableItems() {
+            let html = ``;
+            let items = model.table.sorted ? 
+                model.table.sortedTableItems : 
+                model.table.masterTable;
+            for(let i = 0; i < items.length; i++){
+                html += `
+                    <tr class='tableitem'>
+                        <td class='padding-right'>${items[i].dateAdded}</td>
+                        <td>${items[i].task}</td>
+                        <td class='padding-right align-text-center'>
+                            ${!items[i].isComplete ? 
+                                `<button onclick='completeTask(${items[i].id})'>Utfør</button>`: 
+                                `${items[i].completeDate}`}
+                        </td>
+                        <td>
+                            <button onclick='addToLocalStorage(${items[i].id})'>Endre</button>
+                            <button onclick='deleteTask(${items[i].id})'>Slett</button>
+                        </td>
+                    </tr>`
+                }
+            return html
+        }
+
+        //Controller
+
+        function isClock() {
+            let time = new Date().toISOString().substring(11,19)
+            // let isTime = setInterval(() => {
+            // }, 500); 
+            return time
+            //console.log(time)
+        }
+        
+        
+
+        function addTableItems(newTask) {
+            let isMasterTable = model.table.masterTable;
+            isMasterTable.push({
+                dateAdded:model.time,
+                id: isMasterTable.length != 0 ?
+                    isMasterTable[isMasterTable.length-1].id+1 : 0,
+                task: newTask,
+                isComplete:false,
+                doneDate: null
+            });
+            isSorting();
+        }
+
+        function completeTask(index) {
+            let element = model.table.masterTable[index];
+            Object.assign(element, {isComplete:true, doneDate:model.time.replace(/"/g,'')});
+            isSorting();
+        }
+
+        function deleteTask(index) {
+            let masterTable = model.table.masterTable;
+            masterTable.splice(index,1);
+            for(let i = 0; i < masterTable.length; i++) {
+                masterTable[i].id = i;
+            }
+            isSorting(); 
+        }
+        
+        function isSorting() {
+            let table = model.table;
+            if (table.sorted) {
+                table.sortedTableItems.length = 0;
+                let isArray = structuredClone(table.masterTable);
+                const getSortableInt = (obj) => {
+                    const firstKey = Object.keys(obj)[0];
+                    const [day, month, year] = obj[firstKey].split('.');
+                    return Number(year + month.padStart(2, '0') + day.padStart(2, '0'));
+                };
+                isArray.sort((a, b) => getSortableInt(b) - getSortableInt(a));
+                for(let i of isArray) {
+                    table.sortedTableItems.push(i);
+                }
+            }
+            updateView();
+        }
+
+        function addToLocalStorage(index) {
+            localStorage.setItem('tableItems', JSON.stringify(model.table.masterTable[index]));
+            console.log('Saved');
+        }
+
+        function restoreTable() {
+            model.table.masterTable = [...JSON.parse(localStorage.getItem('tableItems'))];
+            isSorting();
+        }
+        
+    </script>
+</body>
+
+</html>
